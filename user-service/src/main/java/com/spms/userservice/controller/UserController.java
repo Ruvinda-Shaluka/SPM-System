@@ -1,12 +1,14 @@
 package com.spms.userservice.controller;
 
-import com.spms.userservice.model.User;
+import com.spms.userservice.dto.*;
 import com.spms.userservice.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -16,34 +18,37 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        return ResponseEntity.ok(userService.registerUser(user));
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
+        UserResponse response = userService.registerUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody Map<String, String> credentials) {
-        User user = userService.authenticateUser(credentials.get("email"), credentials.get("password"));
-        if (user != null) {
-            return ResponseEntity.ok("Authentication successful for user ID: " + user.getId());
-        }
-        return ResponseEntity.status(401).body("Invalid credentials");
+    public ResponseEntity<AuthResponse> authenticate(@Valid @RequestBody AuthRequest request) {
+        AuthResponse response = userService.authenticateUser(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getProfile(@PathVariable Long id) {
-        User user = userService.getUserProfile(id);
-        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+    public ResponseEntity<UserResponse> getProfile(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserProfile(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = userService.updateUserProfile(id, user);
-        return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+    public ResponseEntity<UserResponse> updateProfile(
+            @PathVariable Long id, 
+            @Valid @RequestBody UpdateProfileRequest request) {
+        return ResponseEntity.ok(userService.updateUserProfile(id, request));
     }
 
-    @GetMapping("/{id}/history")
-    public ResponseEntity<String> getHistory(@PathVariable Long id) {
-        String history = userService.getBookingHistory(id);
-        return history != null ? ResponseEntity.ok(history) : ResponseEntity.notFound().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }
