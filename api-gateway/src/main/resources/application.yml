@@ -10,8 +10,49 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+              - "http://127.0.0.1:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+      routes:
+        - id: user-service-route
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+
+        - id: parking-space-service-route
+          uri: lb://parking-space-service
+          predicates:
+            - Path=/spaces/**
+
+        - id: vehicle-service-route
+          uri: lb://vehicle-service
+          predicates:
+            - Path=/vehicles/**
+
+        - id: payment-service-route
+          uri: lb://payment-service
+          predicates:
+            - Path=/payments/**
+
+        - id: booking-service-route
+          uri: lb://booking-service
+          predicates:
+            - Path=/bookings/**
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
