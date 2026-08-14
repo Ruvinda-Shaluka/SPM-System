@@ -4,23 +4,47 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "app_users")
-@Data // Lombok automatically creates Getters, Setters, and toString()
-@NoArgsConstructor // Lombok creates the default constructor required by JPA
-@AllArgsConstructor // Lombok creates a constructor with all fields
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
-    private String email;
-    private String password;
-    private String role; // e.g., "DRIVER" or "OWNER"
 
-    @Column(columnDefinition = "TEXT")
-    private String bookingHistory; // A simple text block to hold log references
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String role; // "DRIVER", "OWNER", "ADMIN"
+
+    private String phoneNumber;
+
+    private String profileImageUrl;
+
+    @Builder.Default
+    private boolean active = true;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
