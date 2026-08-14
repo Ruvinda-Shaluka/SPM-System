@@ -1,0 +1,24 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: parking-space-service
+  datasource:
+    # Adding createDatabaseIfNotExist automatically builds the schema for you
+    url: jdbc:mysql://localhost:3306/spms_parking_db?createDatabaseIfNotExist=true
+    username: root
+    password: Shaluka020524 # Change this to your actual local MySQL password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # Automatically creates and updates the tables based on your Models
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
