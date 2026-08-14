@@ -1,0 +1,7 @@
+# Centralized Configuration for User Service
+server:
+  port: 8081
+
+jwt:
+  secret: ${JWT_SECRET:spmsSuperSecretKeyForJwtAuthenticationMustBeAtLeast256BitsLong2026!}
+  expiration: 86400000
