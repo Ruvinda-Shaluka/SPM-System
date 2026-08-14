@@ -12,15 +12,20 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.4.2",
     "eureka-js-client": "^4.5.0",
     "express": "^5.2.1",
     "mysql2": "^3.23.3",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.6",
     "@types/node": "^26.2.0",
+    "@types/uuid": "^10.0.0",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
   }
