@@ -1,22 +1,24 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
-# Create the database instance (un-configured for now)
 db = SQLAlchemy()
 
 def create_app():
-    # Initialize Flask
     app = Flask(__name__)
-    
-    # Apply configurations
     app.config.from_object(Config)
     
-    # Initialize the database with the app
     db.init_app(app)
     
-    # Register the routes (Blueprints)
-    # We import this down here to prevent circular dependency errors
+    # Health check endpoints for Eureka and Gateway
+    @app.route('/health')
+    def health():
+        return jsonify({'status': 'UP', 'service': 'payment-service'})
+
+    @app.route('/info')
+    def info():
+        return jsonify({'service': 'payment-service', 'version': '1.0.0'})
+
     from app.routes import payment_bp
     app.register_blueprint(payment_bp)
     
