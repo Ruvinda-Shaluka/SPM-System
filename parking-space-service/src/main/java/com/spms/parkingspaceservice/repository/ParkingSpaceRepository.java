@@ -9,8 +9,17 @@ import java.util.List;
 @Repository
 public interface ParkingSpaceRepository extends JpaRepository<ParkingSpace, String> {
 
-    // Spring Data JPA automatically writes the SQL for these based on the method names!
     List<ParkingSpace> findByIsAvailableTrue();
 
-    List<ParkingSpace> findByLocationIgnoreCase(String location);
+    List<ParkingSpace> findByLocationIgnoreCaseContaining(String location);
+
+    List<ParkingSpace> findByCityIgnoreCase(String city);
+
+    List<ParkingSpace> findByZoneIgnoreCase(String zone);
+
+    List<ParkingSpace> findByOwnerId(String ownerId);
+
+    List<ParkingSpace> findByCityIgnoreCaseAndZoneIgnoreCase(String city, String zone);
+
+    List<ParkingSpace> findByCityIgnoreCaseAndIsAvailableTrue(String city);
 }

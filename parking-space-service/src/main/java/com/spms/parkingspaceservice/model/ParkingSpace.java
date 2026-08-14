@@ -3,38 +3,59 @@ package com.spms.parkingspaceservice.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "parking_spaces")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ParkingSpace {
 
     @Id
-    private String id; // We will use strings like "A1", "B2" as the primary key
+    private String id; // e.g., "A1", "SLOT-001"
 
-    private String location;
-    private boolean isAvailable;
-    private String type;
+    @Column(nullable = false)
+    private String location; // e.g., "Grand Mall, Level 2"
 
-    // Default constructor required by JPA
-    public ParkingSpace() {}
+    @Column(nullable = false)
+    private String city; // e.g., "Colombo", "New York"
 
-    public ParkingSpace(String id, String location, boolean isAvailable, String type) {
-        this.id = id;
-        this.location = location;
-        this.isAvailable = isAvailable;
-        this.type = type;
-    }
+    @Column(nullable = false)
+    private String zone; // e.g., "Zone A - North", "Sector 4"
 
-    // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    @Column(nullable = false)
+    private String ownerId; // ID of the space owner / provider
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+    @Column(nullable = false)
+    private String type; // "STANDARD", "COMPACT", "EV_CHARGING", "VIP", "HANDICAPPED"
 
-    public boolean isAvailable() { return isAvailable; }
-    public void setAvailable(boolean available) { isAvailable = available; }
+    @Column(nullable = false)
+    private Double pricePerHour;
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    @Builder.Default
+    private boolean isAvailable = true;
+
+    private Integer totalSlots;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    private String imageUrl;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
