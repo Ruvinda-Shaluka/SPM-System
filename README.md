@@ -60,6 +60,16 @@ The Smart Parking Management System (SPMS) is engineered using a **polyglot micr
 
 ---
 
+## 🖥️ Service Discovery & Registry (Eureka Dashboard)
+
+All 7 services (API Gateway, Config Server, User Service, Parking Space Service, Vehicle Service, Payment Service, and Booking Service) dynamically register with Netflix Eureka Service Registry on port `8761`.
+
+![Eureka Dashboard](./docs/screenshots/eureka_dashboard.png)
+
+*Figure: Spring Cloud Netflix Eureka dashboard showing all polyglot microservices with status `UP`.*
+
+---
+
 ## 🛠️ Technology Stack Breakdown
 
 | Service | Technology | Database | Key Libraries |
